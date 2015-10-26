@@ -4,7 +4,6 @@
 int *findDividers (int num);
 
 int main() {
-  printf("---------------------\n");
   int dividersCount[20];
   int *dividers;
   int factor;
@@ -26,9 +25,6 @@ int main() {
 
   for(i=1; i<20; i++) {
     factor = pow(i, *(dividersCount + i));
-    printf("i: %d\n", i);
-    printf("pow: %d\n", *(dividersCount + i));
-    printf("factor: %d\n", factor);
     ppcm *= factor;
   }
 
