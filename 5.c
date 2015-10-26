@@ -1,54 +1,55 @@
 #include <stdio.h>
+#include <math.h>
 
-int findDividers[] (int num);
+int *findDividers (int num);
 
 int main() {
-    int dividersCount[20];
-    int dividers[20];
-    int ppcm = 1;
-    int i;
+  printf("---------------------\n");
+  int dividersCount[20];
+  int *dividers;
+  int factor;
+  long ppcm = 1;
+  int i, j;
 
-    for(i=1; i<20; i++) {
-        dividersCount[i] = 0;
+  for(i=1; i<20; i++) {
+    dividersCount[i] = 0;
+  }
+
+  for(i=2; i<20; i++) {
+    dividers = findDividers(i);
+    for (j=2; j<20; j++) {
+      if(*(dividersCount + j) < *(dividers + j)) {
+        *(dividersCount + j) = *(dividers + j);
+      }
     }
+  }
 
-   for(i=0; i<20; i++) {
-        dividers = findDividers(i);
-        for (i=2; i<20; i++) {
-            printf("dividersCount[i]: %d\n", dividersCount[i]);
-            if(*dividersCount[i] < dividers) {
-                *dividersCount[i] = dividers;
-            }
-            dividers++;
-        }
-    }
+  for(i=1; i<20; i++) {
+    factor = pow(i, *(dividersCount + i));
+    printf("i: %d\n", i);
+    printf("pow: %d\n", *(dividersCount + i));
+    printf("factor: %d\n", factor);
+    ppcm *= factor;
+  }
 
-    /*
-     * for(i=0; i<20; i++) {
-     *     ppcm *= dividersCount[i];
-     * }
-     */
-
-    printf("PPCM: %d\n", ppcm);
-    return 0;
+  printf("PPCM: %ld\n", ppcm);
+  return 0;
 }
 
-int findDividers[] (int num) {
-    int i;
-    int dividers[20];
+int *findDividers (int num) {
+  int i;
+  static int dividers[20];
 
-    for(i=0; i<20; i++) {
-        dividers[i] = 0;
+  for(i=0; i<20; i++) {
+    dividers[i] = 0;
+  }
+
+  for(i=2; i<20; i++) {
+    while (num % i == 0) {
+      dividers[i] += 1;
+      num /= i;
     }
+  }
 
-    do {
-        for(i=2; i<20; i++) {
-            if(num % i == 0) {
-                dividers[i] += 1;
-                num /= i;
-            }
-        }
-    } while (num > 1);
-
-    return dividers;
+  return dividers;
 }
